@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "ARMarker.sln"
+    "dotnet.defaultSolution": "ARMarker.slnx"
 }

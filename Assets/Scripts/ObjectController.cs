@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
+    bool kukirigare=false;
+    GameObject[] items;
+
     public void RotateLeft()
     {
         // findobjects with tag "modelObject"
@@ -24,17 +27,39 @@ public class ObjectController : MonoBehaviour
         }   
     }
 
-    public void PopUp()
+    public void MoveUp()
     {
         // findobjects with tag "modelObject"
         GameObject[] objects = GameObject.FindGameObjectsWithTag("modelObject");
 
         foreach (GameObject obj in objects)
         {
-            Canvas canvas = obj.GetComponentInChildren<Canvas>();
+            obj.transform.position += obj.transform.up * 0.1f;
+        }   
+    }
+
+    public void MoveDown()
+    {
+        // findobjects with tag "modelObject"
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("modelObject");
+
+        foreach (GameObject obj in objects)
+        {
+            obj.transform.position += obj.transform.up * -0.1f;
+        }   
+    }
+
+    public void PopUp()
+    {
+        // findobjects with tag "modelObject"
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("infoLemon");
+
+        foreach (GameObject obj in objects)
+        {
+            Canvas canvas = obj.GetComponent<Canvas>();
             if (canvas != null)
             {
-                canvas.enabled = !canvas.enabled;
+               canvas.enabled = !canvas.enabled;
             }   
         }   
     }  
@@ -42,11 +67,11 @@ public class ObjectController : MonoBehaviour
     public void PlayAudio()
     {
         // findobjects with tag "modelObject"
-        GameObject[] objects = GameObject.FindGameObjectsWithTag("modelObject");
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("audioLemon");
 
         foreach (GameObject obj in objects)
         {
-            AudioSource audioSource = obj.GetComponentInChildren<AudioSource>();
+            AudioSource audioSource = obj.GetComponent<AudioSource>();
             if (audioSource != null)
             {
                 if (audioSource.isPlaying)
@@ -59,5 +84,41 @@ public class ObjectController : MonoBehaviour
                 }
             }   
         }
-    } 
+    }
+
+    public void PrepareSpin()
+    {
+        kukirigare=!kukirigare;
+
+        GameObject[] objects = GameObject.FindGameObjectsWithTag("modelObject");
+
+        foreach (GameObject obj in objects)
+        {
+            Animator anim = obj.GetComponentInChildren<Animator>();
+            if (kukirigare)
+            {
+               anim.speed = 0;
+            } else
+            {
+                anim.speed = 1;
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (kukirigare)
+        {
+            if (items == null)
+            {
+                items = GameObject.FindGameObjectsWithTag("modelObject");
+            } else
+            {
+                foreach(GameObject i in items)
+                {
+                    i.transform.Rotate(0, 36, 0);
+                }                
+            }
+        }
+    }
 }
